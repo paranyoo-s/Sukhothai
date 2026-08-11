@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สุโขทัยที่จับต้องได้ — การประดิษฐ์สร้าง "สุโขทัย"</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Mitr:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#152420;
+    --bg-alt:#1c2f28;
+    --paper:#efe6ce;
+    --paper-dim:#e3d7b3;
+    --ink:#2a2013;
+    --ink-soft:#4a3d29;
+    --laterite:#b2542e;
+    --laterite-dim:#8f4526;
+    --gold:#c69a3e;
+    --pond:#4f7267;
+    --stamp:#9a3428;
+    --line: rgba(198,154,62,.35);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--paper);
+    font-family:'Noto Sans Thai', sans-serif;
+    font-weight:300;
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Noto Serif Thai', serif;
+    font-weight:700;
+    margin:0;
+    color:var(--paper);
+  }
+  p{margin:0 0 1em 0;}
+  a{color:inherit;}
+  .eyebrow{
+    font-family:'Mitr', sans-serif;
+    font-weight:500;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    font-size:.72rem;
+    color:var(--gold);
+  }
+  ::selection{background:var(--laterite); color:var(--paper);}
+
+  /* ---------- texture ---------- */
+  .laterite-texture{
+    background-image:
+      radial-gradient(circle at 15% 25%, rgba(178,84,46,.18) 0, transparent 40%),
+      radial-gradient(circle at 85% 15%, rgba(198,154,62,.14) 0, transparent 45%),
+      radial-gradient(circle at 70% 80%, rgba(79,114,103,.16) 0, transparent 45%);
+  }
+
+  /* ---------- nav ---------- */
+  nav{
+    position:sticky; top:0; z-index:100;
+    background:rgba(21,36,32,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    gap:clamp(.5rem,2vw,1.6rem);
+    padding:.85rem 1rem;
+    flex-wrap:wrap;
+  }
+  nav a{
+    font-family:'Mitr', sans-serif;
+    font-size:.78rem;
+    letter-spacing:.03em;
+    color:var(--paper-dim);
+    text-decoration:none;
+    padding:.3rem .2rem;
+    border-bottom:2px solid transparent;
+    transition:.2s;
+    white-space:nowrap;
+  }
+  nav a:hover{color:var(--gold); border-color:var(--gold);}
+
+  /* ---------- hero ---------- */
+  header.hero{
+    position:relative;
+    padding:5.5rem 1.5rem 3rem;
+    text-align:center;
+    overflow:hidden;
+  }
+  header.hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      linear-gradient(180deg, rgba(21,36,32,0) 0%, var(--bg) 92%),
+      repeating-linear-gradient(115deg, rgba(198,154,62,.05) 0 2px, transparent 2px 34px);
+    pointer-events:none;
+  }
+  .hero-inner{position:relative; max-width:820px; margin:0 auto;}
+  .hero .eyebrow{display:block; margin-bottom:1.1rem;}
+  .hero h1{
+    font-size:clamp(2.1rem, 6vw, 3.6rem);
+    line-height:1.25;
+  }
+  .hero .subtitle{
+    font-family:'Noto Serif Thai', serif;
+    font-weight:500;
+    font-size:clamp(1.05rem,2.6vw,1.35rem);
+    color:var(--gold);
+    margin-top:.9rem;
+  }
+  .hero .lede{
+    max-width:640px; margin:1.8rem auto 0;
+    color:var(--paper-dim);
+    font-size:1.02rem;
+  }
+
+  /* stamp badge */
+  .stamp{
+    display:inline-flex; flex-direction:column; align-items:center; justify-content:center;
+    font-family:'Mitr', sans-serif;
+    border:2px solid var(--stamp);
+    color:var(--stamp);
+    border-radius:6px;
+    padding:.35rem .7rem;
+    transform:rotate(-4deg);
+    font-size:.68rem;
+    letter-spacing:.05em;
+    line-height:1.35;
+    background:rgba(154,52,40,.06);
+    white-space:nowrap;
+  }
+  .stamp b{font-size:.95rem; font-weight:600; letter-spacing:.02em;}
+  .stamp.light{ border-color:var(--gold); color:var(--gold); background:rgba(198,154,62,.08);}
+
+  /* invention ribbon */
+  .ribbon{
+    position:relative; margin-top:3rem;
+    display:flex; gap:1.1rem; overflow-x:auto;
+    padding:1rem .5rem 1.4rem;
+    scrollbar-width:thin;
+  }
+  .ribbon::-webkit-scrollbar{height:6px;}
+  .ribbon::-webkit-scrollbar-thumb{background:var(--line); border-radius:4px;}
+  .rib-item{
+    flex:0 0 auto;
+    text-align:center;
+    min-width:118px;
+    padding-top:1rem;
+    border-top:2px solid var(--laterite);
+    position:relative;
+  }
+  .rib-item::before{
+    content:""; position:absolute; top:-6px; left:50%; transform:translateX(-50%);
+    width:10px; height:10px; border-radius:50%; background:var(--laterite);
+    box-shadow:0 0 0 3px var(--bg);
+  }
+  .rib-year{font-family:'Mitr',sans-serif; font-weight:600; color:var(--gold); font-size:.95rem;}
+  .rib-label{font-size:.74rem; color:var(--paper-dim); margin-top:.25rem;}
+
+  /* ---------- sections ---------- */
+  main{max-width:960px; margin:0 auto; padding:0 1.4rem;}
+  section{padding:4.2rem 0;}
+  section.divider-top{border-top:1px solid var(--line);}
+
+  .section-head{
+    display:flex; flex-wrap:wrap; align-items:baseline; gap:1rem 1.4rem;
+    margin-bottom:2.2rem;
+  }
+  .section-head .num{
+    font-family:'Noto Serif Thai',serif; font-weight:700; color:var(--laterite);
+    font-size:1rem; opacity:.85;
+  }
+  .section-head h2{font-size:clamp(1.5rem,4vw,2.1rem);}
+  .section-intro{color:var(--paper-dim); max-width:70ch; font-size:1rem;}
+
+  /* paper cards for body content */
+  .paper{
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:4px;
+    box-shadow:0 18px 40px -20px rgba(0,0,0,.55);
+  }
+  .paper p{color:var(--ink-soft);}
+  .paper h3, .paper h4{color:var(--ink);}
+
+  .card{
+    padding:1.8rem 2rem;
+  }
+  @media(max-width:600px){.card{padding:1.3rem 1.3rem;}}
+
+  .prose h3{
+    font-size:1.15rem; margin:1.6rem 0 .6rem; color:var(--laterite-dim);
+    font-family:'Noto Serif Thai',serif;
+  }
+  .prose h3:first-child{margin-top:0;}
+
+  blockquote{
+    margin:1.4rem 0; padding:1rem 1.3rem;
+    border-left:4px solid var(--gold);
+    background:rgba(198,154,62,.08);
+    font-family:'Noto Serif Thai', serif;
+    font-style:normal;
+    color:var(--ink);
+    font-size:.98rem;
+  }
+  blockquote cite{
+    display:block; margin-top:.5rem; font-family:'Mitr',sans-serif; font-size:.72rem;
+    color:var(--ink-soft); font-style:normal;
+  }
+
+  /* timeline */
+  .timeline{position:relative; margin:2rem 0 0; padding-left:1.8rem;}
+  .timeline::before{
+    content:""; position:absolute; left:5px; top:6px; bottom:6px; width:2px;
+    background:linear-gradient(var(--laterite), var(--pond));
+  }
+  .t-item{position:relative; padding-bottom:1.9rem;}
+  .t-item:last-child{padding-bottom:0;}
+  .t-item::before{
+    content:""; position:absolute; left:-1.8rem; top:.35rem;
+    width:12px; height:12px; border-radius:50%;
+    background:var(--paper); border:3px solid var(--laterite);
+  }
+  .t-year{
+    font-family:'Mitr',sans-serif; font-weight:600; color:var(--laterite-dim);
+    font-size:.85rem; letter-spacing:.02em; margin-bottom:.15rem;
+  }
+  .t-item h4{font-size:1.02rem; margin-bottom:.35rem; color:var(--ink);}
+  .t-item p{margin-bottom:0; font-size:.95rem;}
+
+  /* two-col grid */
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:1.4rem;}
+  @media(max-width:720px){.grid-2{grid-template-columns:1fr;}}
+
+  .museum-card{
+    background:var(--bg-alt);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:1.5rem 1.6rem;
+  }
+  .museum-card h4{font-family:'Noto Serif Thai',serif; color:var(--gold); font-size:1.05rem; margin-bottom:.5rem;}
+  .museum-card p{color:var(--paper-dim); font-size:.92rem; margin-bottom:.6rem;}
+  .tag-row{display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.7rem;}
+  .tag{
+    font-family:'Mitr',sans-serif; font-size:.68rem; letter-spacing:.03em;
+    padding:.2rem .55rem; border:1px solid var(--line); border-radius:20px;
+    color:var(--pond); background:rgba(79,114,103,.12);
+  }
+
+  /* statue analysis */
+  .statue-wrap{display:grid; grid-template-columns:1.1fr 1.4fr; gap:2rem; align-items:start;}
+  @media(max-width:760px){.statue-wrap{grid-template-columns:1fr;}}
+  .statue-figure{
+    background:var(--bg-alt); border:1px solid var(--line); border-radius:6px;
+    padding:1.6rem; text-align:center;
+  }
+  .statue-figure svg{width:100%; max-width:210px; height:auto;}
+  .statue-figure figcaption{
+    margin-top:.8rem; font-family:'Mitr',sans-serif; font-size:.72rem;
+    color:var(--paper-dim); letter-spacing:.02em;
+  }
+  .detail-list{list-style:none; margin:0; padding:0;}
+  .detail-list li{
+    padding:.7rem 0; border-bottom:1px solid var(--line);
+    display:grid; grid-template-columns:110px 1fr; gap:.8rem; font-size:.92rem;
+  }
+  .detail-list li:last-child{border-bottom:none;}
+  .detail-list b{font-family:'Mitr',sans-serif; color:var(--gold); font-weight:500; font-size:.78rem; letter-spacing:.02em;}
+  .detail-list span{color:var(--paper-dim);}
+
+  /* festival */
+  .theory-box{
+    border:1px dashed var(--line);
+    border-radius:6px;
+    padding:1.4rem 1.6rem;
+    margin-top:1.5rem;
+    background:rgba(79,114,103,.08);
+  }
+  .theory-box .eyebrow{color:var(--pond);}
+  .theory-box p{color:var(--paper-dim); font-size:.93rem; margin-bottom:0;}
+
+  .fact-check{
+    display:flex; gap:1rem; margin-top:1.6rem; flex-wrap:wrap;
+  }
+  .fc-item{
+    flex:1 1 220px;
+    background:var(--bg-alt); border-radius:6px; border:1px solid var(--line);
+    padding:1.1rem 1.3rem;
+  }
+  .fc-item .fc-label{font-family:'Mitr',sans-serif; font-size:.68rem; letter-spacing:.06em; color:var(--laterite); text-transform:uppercase;}
+  .fc-item .fc-value{font-family:'Noto Serif Thai',serif; font-size:1.6rem; color:var(--paper); margin:.25rem 0;}
+  .fc-item .fc-sub{font-size:.82rem; color:var(--paper-dim);}
+
+  /* pull quote big */
+  .pull{
+    font-family:'Noto Serif Thai',serif;
+    font-size:clamp(1.15rem,2.6vw,1.5rem);
+    line-height:1.6;
+    color:var(--gold);
+    text-align:center;
+    max-width:760px; margin:0 auto;
+    padding:2rem 0;
+  }
+  .pull span{color:var(--laterite);}
+
+  /* actors */
+  .actor-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin-top:1.5rem;}
+  .actor{
+    background:var(--bg-alt); border:1px solid var(--line); border-radius:6px; padding:1.1rem 1.2rem;
+  }
+  .actor .role{font-family:'Mitr',sans-serif; font-size:.68rem; color:var(--pond); letter-spacing:.04em; text-transform:uppercase;}
+  .actor h4{font-size:.98rem; margin:.3rem 0 .3rem; font-family:'Noto Serif Thai',serif; color:var(--paper);}
+  .actor p{font-size:.85rem; color:var(--paper-dim); margin:0;}
+
+  footer{
+    text-align:center; padding:3.5rem 1.5rem 4rem;
+    color:var(--paper-dim); font-size:.82rem;
+    border-top:1px solid var(--line);
+  }
+  footer .eyebrow{display:block; margin-bottom:.6rem;}
+  footer .src{font-size:.76rem; opacity:.75; max-width:560px; margin:1rem auto 0;}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#intro">บทนำ</a>
+  <a href="#s71">7.1 อุทยานฯ</a>
+  <a href="#s72">7.2 พิพิธภัณฑ์</a>
+  <a href="#s73">7.3 อนุสาวรีย์</a>
+  <a href="#s74">7.4 ประเพณี</a>
+  <a href="#conclusion">บทสรุป</a>
+</nav>
+
+<header class="hero laterite-texture">
+  <div class="hero-inner">
+    <span class="eyebrow">บทที่ 7 · วิทยานิพนธ์ประวัติศาสตร์นิพนธ์สุโขทัย</span>
+    <h1>สุโขทัยที่จับต้องได้</h1>
+    <div class="subtitle">การประดิษฐ์สร้าง "สุโขทัย" ภายนอกตำราประวัติศาสตร์ พ.ศ. 2496–2534</div>
+    <p class="lede">
+      ความเป็นอุดมคติของสุโขทัย "รุ่งอรุณแห่งความสุข" ไม่ได้ดำรงอยู่เพียงในหน้าหนังสือ แต่ถูกทำให้จับต้องได้ผ่าน
+      อุทยานประวัติศาสตร์ พิพิธภัณฑ์ อนุสาวรีย์ และประเพณีที่ "ประดิษฐ์" ขึ้นโดยรัฐ — สิ่งเหล่านี้กระตุ้นประสาทสัมผัสทั้งห้า
+      สร้างความภาคภูมิใจ และนำรายได้ท่องเที่ยวเข้าประเทศ จนกลายเป็นเครื่องยืนยันประวัติศาสตร์กระแสหลักให้มั่นคงยืนยาว
+      แม้จะมีประวัติศาสตร์กระแสรองโต้แย้งก็ไม่อาจล้มล้างได้
+    </p>
+
+    <div class="ribbon" aria-label="เส้นเวลาการประดิษฐ์สร้างสุโขทัย">
+      <div class="rib-item"><div class="rib-year">2454</div><div class="rib-label">ตั้งกรมศิลปากร</div></div>
+      <div class="rib-item"><div class="rib-year">2496</div><div class="rib-label">จังหวัดวัฒนธรรมฯ</div></div>
+      <div class="rib-item"><div class="rib-year">2504</div><div class="rib-label">พ.ร.บ. โบราณสถาน</div></div>
+      <div class="rib-item"><div class="rib-year">2507</div><div class="rib-label">เปิดพิพิธภัณฑ์ฯ</div></div>
+      <div class="rib-item"><div class="rib-year">2520</div><div class="rib-label">ฟื้นลอยกระทงฯ</div></div>
+      <div class="rib-item"><div class="rib-year">2521</div><div class="rib-label">แผนแม่บทอุทยานฯ</div></div>
+      <div class="rib-item"><div class="rib-year">2526</div><div class="rib-label">เปิดอนุสาวรีย์ฯ</div></div>
+      <div class="rib-item"><div class="rib-year">2531</div><div class="rib-label">ประกาศอุทยานฯ</div></div>
+      <div class="rib-item"><div class="rib-year">2534</div><div class="rib-label">มรดกโลก</div></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- INTRO -->
+  <section id="intro">
+    <div class="section-head">
+      <span class="num">บทนำ</span>
+      <h2>เมื่อประวัติศาสตร์ต้องมีตัวตน</h2>
+    </div>
+    <div class="paper card prose">
+      <p>
+        ผู้วิจัยชี้ว่า สิ่งที่ทำให้ภาพลักษณ์ "อุดมคติ" ของสุโขทัยยังคงอยู่มาจนทุกวันนี้ ไม่ใช่เพียงประวัติศาสตร์นิพนธ์ชาติฉบับ
+        ทางการเท่านั้น แต่ยังมีสิ่งที่ถูก <b>"ประดิษฐ์"</b> หรือ <b>"สร้าง"</b> ขึ้นมาโดยมีฐานจากประวัติศาสตร์ไทยกระแสหลัก
+        — โดยเฉพาะการเข้ามาจัดการและจัดสร้างให้จังหวัดสุโขทัยมีอุทยานประวัติศาสตร์ พิพิธภัณฑ์ อนุสาวรีย์ เทศกาล
+        และประเพณีประดิษฐ์รูปแบบต่างๆ
+      </p>
+      <p>
+        สิ่งก่อสร้างเหล่านี้สำคัญยิ่งเพราะเป็นการจำลองประวัติศาสตร์จากในหนังสือให้มีตัวตน โดยเฉพาะเมื่อรัฐและหน่วยงาน
+        ราชการหยิบยกเรื่องเล่าแม่บทเหล่านี้มาสร้าง ทำให้อดีตอันยิ่งใหญ่กลับมามีชีวิต คนทั่วไปจับต้องมองเห็นได้ด้วย
+        ประสาทสัมผัสทั้งห้า กระตุ้นความรู้สึกภาคภูมิใจ พร้อมสร้างมูลค่าทางเศรษฐกิจและรายได้ท่องเที่ยว — นี่คือคำตอบว่า
+        เหตุใดประวัติศาสตร์สุโขทัยกระแสหลักจึงยืนยงมั่นคง แม้จะมีประวัติศาสตร์กระแสรองมาโต้แย้งก็ตาม
+      </p>
+      <p style="margin-bottom:0;">
+        บทนี้จึงวิเคราะห์การสร้างสถานที่และประเพณีต่างๆ ที่เกี่ยวข้องกับประวัติศาสตร์สุโขทัย — ความหมาย หน้าที่
+        จุดมุ่งหมาย ผู้สร้าง และบทบาทของแต่ละสิ่ง — เพื่อยืนยันข้อสมมติฐานว่าประวัติศาสตร์สุโขทัยเกิดขึ้นเพราะเกี่ยวพัน
+        กับความเป็นชาติ ความเป็นไทย และความเป็นอุดมคติ ไม่ใช่เพียงเรื่องความงดงามหรือประวัติศาสตร์ แต่ยังเพื่อประโยชน์
+        ด้านการท่องเที่ยวและเศรษฐกิจด้วย
+      </p>
+    </div>
+  </section>
+
+  <!-- 7.1 -->
+  <section id="s71" class="divider-top">
+    <div class="section-head">
+      <span class="num">7.1</span>
+      <h2>การบูรณะโบราณสถาน<br>และการสร้างอุทยานประวัติศาสตร์สุโขทัย</h2>
+      <span class="stamp">ประกาศเป็นอุทยานฯ<b>พ.ศ. 2531</b></span>
+    </div>
+    <p class="section-intro">
+      จากป่ารกร้างที่ถูกลักลอบขุดหาโบราณวัตถุ สู่อุทยานประวัติศาสตร์แห่งแรกของไทยและมรดกโลก — เส้นทางเกือบสี่สิบปี
+      ของการบูรณะเมืองเก่าสุโขทัย ซึ่งควบคู่ไปกับการโยกย้ายชุมชนดั้งเดิมออกจากพื้นที่
+    </p>
+
+    <div class="paper card">
+      <div class="timeline">
+
+        <div class="t-item">
+          <div class="t-year">ก่อน พ.ศ. 2475</div>
+          <h4>แนวคิดบูรณะแบบราชประเพณี → งานราชการ</h4>
+          <p>การบูรณปฏิสังขรณ์เดิมเป็นราชประเพณีทำนุบำรุงศาสนา ก่อนจะกลายเป็นการแสดงความ "ศิวิไลซ์" ในรัชกาลที่ 4–5
+          และเข้าสู่ระบบราชการเมื่อตั้งกรมศิลปากร (พ.ศ. 2454) พร้อมแนวคิดชาตินิยมว่าโบราณสถานคืออดีตอันรุ่งเรืองของชาติ</p>
+        </div>
+
+        <div class="t-item">
+          <div class="t-year">พ.ศ. 2492</div>
+          <h4>สำรวจพบความเสียหายรุนแรง</h4>
+          <p>อธิบดีกรมศิลปากรขึ้นสำรวจพบโบราณสถานถูกขุดทำลายอย่างหนัก จากการลักลอบขุดขายโบราณวัตถุ ขาดความรู้และ
+          การควบคุมดูแล งบประมาณเดิมมีเพียงปีละ 200 บาท เมืองเก่าทั้งเมืองรกร้างเป็นป่าทึบจนบดบังโบราณสถาน</p>
+        </div>
+
+        <div class="t-item">
+          <div class="t-year">พ.ศ. 2494</div>
+          <h4>ตั้งหน่วยศิลปากรประจำจังหวัด</h4>
+          <p>เพื่อดูแลรักษาโบราณสถานและรับมอบโบราณวัตถุจากวัดราชธานี แต่ยังไม่มีการขุดค้นหรือจัดตั้งพิพิธภัณฑ์อย่างเป็นระบบ</p>
+        </div>
+
+        <div class="t-item">
+          <div class="t-year">พ.ศ. 2496</div>
+          <h4>สุโขทัยกลายเป็น "จังหวัดวัฒนธรรมและประวัติศาสตร์ของชาติ"</h4>
+          <p>จอมพล ป. พิบูลสงคราม เดินทางตรวจราชการและเห็นควรฟื้นฟูอย่างจริงจัง คณะรัฐมนตรีจึงลงมติปรับปรุงสถานะจังหวัด
+          พร้อมตั้งคณะกรรมการฟื้นฟูบูรณะเมืองเก่า และคณะอนุกรรมการรวบรวมประวัติศาสตร์สุโขทัยทำเป็นหนังสือ
+          กำหนดบูรณะก่อน 3 แห่งในกำแพงเมือง คือ วัดมหาธาตุ วัดศรีสวาย และศาลหลักเมือง</p>
+        </div>
+
+        <div class="t-item">
+          <div class="t-year">พ.ศ. 2499</div>
+          <h4>"โครงการ 5 ปี"</h4>
+          <p>เมื่อวัดสำคัญใกล้บูรณะเสร็จ กรมศิลปากรวางแผนบูรณะโบราณสถานที่เหลือให้มากที่สุดภายใน 5 ปี</p>
+        </div>
+
+        <div class="t-item">
+          <div class="t-year">พ.ศ. 2501</div>
+          <h4>คณะกรรมการถูกยุบ</h4>
+          <p>จากการยุบกระทรวงวัฒนธรรม ภาระตกมาที่กระทรวงศึกษาธิการและกรมศิลปากรตามกำลังงบประมาณที่ได้รับ</p>
+        </div>
+
+        <div class="t-item">
+          <div class="t-year">พ.ศ. 2504</div>
+          <h4>พ.ร.บ. โบราณสถานฯ และอิทธิพลตะวันตก</h4>
+          <p>ออกพระราชบัญญัติโบราณสถาน โบราณวัตถุ ศิลปวัตถุ และพิพิธภัณฑสถานแห่งชาติ ไทยร่วมสัตยาบันอนุสัญญาระหว่าง
+          ประเทศด้านการสงวนรักษามรดกวัฒนธรรม แนวคิดอนุรักษ์จึงเปลี่ยนจาก "ความงามในอดีต" สู่ "ประโยชน์ทางท่องเที่ยว
+          และเศรษฐกิจ"</p>
+        </div>
+
+        <div class="t-item">
+          <div class="t-year">พ.ศ. 2519–2521</div>
+          <h4>แผนแม่บทอุทยานประวัติศาสตร์สุโขทัย</h4>
+          <p>สำนักงานคณะกรรมการพัฒนาเศรษฐกิจและสังคมแห่งชาติเสนอพัฒนาพื้นที่ราว 1,600 ไร่ บรรจุในแผนพัฒนาฯ ฉบับที่ 4–5
+          ร่วมมือกับสถาบันการศึกษาและยูเนสโก แผนแม่บทสำเร็จปี 2521 — สุโขทัยเป็นเมืองแรกของไทยที่มีโครงการลักษณะนี้</p>
+        </div>
+
+        <div class="t-item">
+          <div class="t-year">พ.ศ. 2509 &amp; หลัง 2521</div>
+          <h4>การโยกย้ายชุมชนบ้านเมืองเก่า</h4>
+          <p>ชุมชนที่ตั้งถิ่นฐานมานานกว่า 200 ปี รอบสระตระพังทองต้องถูกย้ายออกเป็นระลอก — ครั้งแรกตั้งแต่ 2509
+          (ก่อนมีแผนแม่บทเสียอีก) และอีกราว 200 ครัวเรือนหลัง พ.ศ. 2521 เพื่อเปิดทางถนนสายใหม่และพื้นที่อุทยานฯ</p>
+        </div>
+
+        <div class="t-item">
+          <div class="t-year">พ.ศ. 2531</div>
+          <h4>ประกาศ "อุทยานประวัติศาสตร์สุโขทัย"</h4>
+          <p>นับเป็นอุทยานประวัติศาสตร์แห่งแรกของประเทศไทย</p>
+        </div>
+
+        <div class="t-item">
+          <div class="t-year">12 ธันวาคม พ.ศ. 2534</div>
+          <h4>ขึ้นทะเบียนมรดกโลก</h4>
+          <p>ยูเนสโกประกาศขึ้นทะเบียนอุทยานฯ สุโขทัย ศรีสัชนาลัย และกำแพงเพชร ร่วมกันในชื่อ
+          "เมืองประวัติศาสตร์สุโขทัยและเมืองบริวาร" — ผู้วิจัยถือว่านี่คือ <b>จุดสูงสุดของการประดิษฐ์สร้างความเป็นสุโขทัย
+          ที่อยู่ภายนอกตำราประวัติศาสตร์</b></p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:1.4rem;">
+      <div class="museum-card">
+        <h4>เสียงเรียกร้องจากสื่อ</h4>
+        <p>คอลัมน์ "ระหว่างบันทึก" โดยน้อย อินทนนท์ (มาลัย ชูพินิจ) ในหนังสือพิมพ์พิมพ์ไทย (2496) เห็นด้วยกับการบูรณะ
+        สุโขทัย แต่เสนอให้รัฐดูแลเมืองโบราณอื่นด้วย เช่น เขาพระวิหาร ไตรตรึงษ์ ไชยปราการ พิมาย และศรีเทพ
+        ก่อนจะถูกธรรมชาติและมนุษย์ทำลาย เช่นเดียวกับ ส.ส. กำแพงเพชรที่ร้องขอคุ้มครองโบราณสถานในพื้นที่ตน</p>
+      </div>
+      <div class="museum-card">
+        <h4>เสียงคัดค้าน: ธิดา สาระยา</h4>
+        <p>นักประวัติศาสตร์ท้องถิ่นผู้เคยร่วมคณะกรรมการแผนแม่บท ถอนตัวเพราะไม่เห็นด้วยกับการ "สร้าง" อุทยานฯ จากตำนาน
+        ที่แต่งขึ้นโดยอิงเพียงศิลาจารึกหลักที่ 1 โดยไม่สะท้อนการสร้างบ้านแปงเมืองจริง เธอเรียกร้องให้บอกสาธารณชนตรงๆ
+        ว่าสิ่งที่สร้างขึ้นคือของประดิษฐ์ ไม่ใช่ต้านการพัฒนา แต่ขออย่าทำลายความหมายและบิดเบือนอดีต</p>
+      </div>
+    </div>
+
+    <div class="pull">"ข้ามไม่พ้นประวัติศาสตร์ชาติ" — แม้กระแสประวัติศาสตร์ท้องถิ่นเคยท้าทาย
+      แต่ก็ไม่อาจล้มล้างภาพจำแบบอุดมคติของสุโขทัยที่ผู้คนติดกรอบไปแล้ว <span>(ธิดา สาระยา, 2530)</span></div>
+  </section>
+
+  <!-- 7.2 -->
+  <section id="s72" class="divider-top">
+    <div class="section-head">
+      <span class="num">7.2</span>
+      <h2>พิพิธภัณฑสถานแห่งชาติ รามคำแหง</h2>
+      <span class="stamp">เปิดอย่างเป็นทางการ<b>25 ม.ค. 2507</b></span>
+    </div>
+    <p class="section-intro">
+      เมื่อขุดค้นแล้วมีโบราณวัตถุมากมายไม่มีที่เก็บ พิพิธภัณฑ์จึงเป็นคำตอบ — และในทางทฤษฎีของเบเนดิก แอนเดอร์สัน
+      พิพิธภัณฑ์คือเครื่องมือของรัฐที่สร้างจินตนาการความเป็นรัฐชาติให้ประชาชนและนักท่องเที่ยวได้เห็น
+    </p>
+
+    <div class="paper card prose">
+      <h3>จากกุฏิวัดราชธานี สู่อาคารพิพิธภัณฑ์</h3>
+      <p>
+        ก่อนหน้านี้ วัตถุโบราณถูกเก็บสะสมอยู่ที่กุฏิวัดราชธานีมานานหลายสิบปี หลักฐานจากนิราศสุโขทัยของคุณหญิงส้มจีน
+        เขื่อนเพชรเสนา (แต่ง พ.ศ. 2473) บันทึกว่ามีสามเณรเฝ้าประตูห้องเก็บของโบราณ ห้ามนำออกนอกวัด แสดงว่า "การท่องเที่ยว"
+        ชมของโบราณสุโขทัยมีมาตั้งแต่ก่อนหน้านั้นแล้ว ข้อเสนอสร้างพิพิธภัณฑ์มีมาตั้งแต่ พ.ศ. 2496 แต่เงียบหายไปจนถึง พ.ศ. 2501
+        เมื่อผู้ว่าราชการจังหวัดร้องขอเร่งด่วน เพราะของมีค่าเก็บกระจัดกระจายไม่ปลอดภัย
+      </p>
+      <h3>การก่อสร้าง</h3>
+      <p>
+        เริ่มก่อสร้าง พ.ศ. 2503 โดยหน่วยศิลปากรที่ 3 จังหวัดสุโขทัย ออกแบบโดย น.ส. จันทร์ลัดดา บุณยมานพ สถาปนิกจาก
+        คณะสถาปัตยกรรมศาสตร์ จุฬาฯ เป็นอาคารไทย 2 ชั้น พร้อมพิพิธภัณฑ์กลางแจ้ง แล้วเสร็จปี 2506 จัดแสดงโดย
+        ม.จ. สุภัทรดิศ ดิศกุล รวบรวมวัตถุจากวัดราชธานีและศาลากลางจังหวัดมาไว้ที่เดียว
+      </p>
+      <h3>สถาปัตยกรรมกับการเมือง</h3>
+      <p>
+        หลังเปลี่ยนแปลงการปกครอง 2475 สถาปัตยกรรมแบบ "คณะราษฎร" ตัดลวดลายไทยออกจนเหลือแต่ตึกเหลี่ยมหลังคาเรียบ
+        แต่เมื่อพ.ศ. 2490 เป็นต้นมา อำนาจคณะราษฎรอ่อนลง สถาปัตยกรรมไทยแบบจารีตถูกรื้อฟื้นเป็น "ไทยประยุกต์"
+        พิพิธภัณฑสถานแห่งชาติรามคำแหงจึงมีหลังคาซ้อนชั้นคล้ายโบสถ์วิหาร มีหน้าจั่วและหางหงส์ — กล่าวได้ว่าเป็น
+        "อาคารแบบฝรั่งที่มีหลังคาแบบไทย" สะท้อนแนวคิดทางการเมืองที่ต้องผสานวิทยาการตะวันตกเข้ากับสัญลักษณ์ความเป็นไทย
+      </p>
+    </div>
+
+    <blockquote>
+      "ชาติไทยเรานั้นได้มีเอกราช มีภาษา มีศิลป และขนบธรรมเนียมประเพณีเป็นของตนเองมาช้านานหลายศตวรรษแล้ว...
+      จึงจำเป็นอย่างยิ่งที่เราจะต้องรักษาสิ่งเหล่านี้ไว้ ให้คงทนถาวรตกเป็นมรดกของอนุชนรุ่นหลังต่อไป"
+      <cite>พระราชดำรัส พระบาทสมเด็จพระเจ้าอยู่หัวภูมิพลอดุลยเดช เนื่องในพิธีเปิดพิพิธภัณฑสถานแห่งชาติ เจ้าสามพระยา 26 ธ.ค. 2504</cite>
+    </blockquote>
+
+    <p class="section-intro" style="margin-top:1.6rem;">
+      ชื่อ "รามคำแหง" ถูกเลือกเพื่อเฉลิมพระเกียรติผู้ประดิษฐ์อักษรไทยเมื่อ พ.ศ. 1826 — ในบริบทสงครามเย็นที่ประเทศ
+      เพื่อนบ้านตกเป็นอาณานิคมและถูกบังคับใช้ภาษาของเจ้าอาณานิคม การมี "ลายสือไทย" เป็นของตนเองจึงถูกชูเป็นสัญลักษณ์
+      ของความเป็น "เอกราช" ที่แตกต่างจากประเทศอื่น
+    </p>
+
+    <h3 style="font-family:'Noto Serif Thai',serif; color:var(--gold); margin:2.2rem 0 1rem; font-size:1.15rem;">
+      พิพิธภัณฑ์พี่น้องอีก 2 แห่ง
+    </h3>
+    <div class="grid-2">
+      <div class="museum-card">
+        <h4>พิพิธภัณฑสถานแห่งชาติ กำแพงเพชร</h4>
+        <p>เริ่มก่อสร้าง 2510 เปิดให้เข้าชม 2514 อาคารทรงไทยประยุกต์ 2 ชั้น จัดแสดงเทวรูปพระอิศวรหล่อสำริดชิ้นสำคัญ</p>
+        <div class="tag-row"><span class="tag">ไทยประยุกต์</span><span class="tag">เปิด 2514</span></div>
+      </div>
+      <div class="museum-card">
+        <h4>พิพิธภัณฑสถานแห่งชาติ สวรรควรนายก</h4>
+        <p>ตั้งอยู่หลังวัดสวรรคาราม อ.สวรรคโลก จากของสะสมส่วนตัวของพระสวรรควรนายกที่มอบให้เป็นสมบัติชาติเมื่อมรณภาพ
+        (2508) เปิดอย่างเป็นทางการ 2527</p>
+        <div class="tag-row"><span class="tag">มรดกพระสงฆ์</span><span class="tag">เปิด 2527</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7.3 -->
+  <section id="s73" class="divider-top">
+    <div class="section-head">
+      <span class="num">7.3</span>
+      <h2>พระบรมราชานุสาวรีย์<br>พ่อขุนรามคำแหงมหาราช</h2>
+      <span class="stamp">เปิดพิธีทางการ<b>17 พ.ย. 2526</b></span>
+    </div>
+    <p class="section-intro">
+      จุดศูนย์รวมความเป็นอุดมคติของสุโขทัยและความเป็นกษัตริย์ — อนุสาวรีย์ไม่เคยเป็นเพียงรูปปั้น แต่คือการจัดวาง
+      "หน้าที่" ของกษัตริย์แต่ละพระองค์ในประวัติศาสตร์ชาติ ผ่านวีรกรรมที่ถูกเลือกสรรมาแล้ว
+    </p>
+
+    <div class="statue-wrap paper card">
+      <figure class="statue-figure">
+        <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ภาพประกอบท่าประทับของพระบรมรูปพ่อขุนรามคำแหงมหาราช">
+          <rect x="0" y="0" width="200" height="240" fill="#efe6ce" rx="4"/>
+          <ellipse cx="100" cy="205" rx="70" ry="10" fill="#c69a3e" opacity=".25"/>
+          <rect x="55" y="150" width="90" height="55" rx="4" fill="#b2542e" opacity=".85"/>
+          <circle cx="100" cy="95" r="30" fill="#b2542e"/>
+          <path d="M100 60 L130 130 Q100 150 70 130 Z" fill="#b2542e"/>
+          <path d="M60 140 Q40 160 45 190" stroke="#8f4526" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <path d="M140 140 Q160 155 150 178" stroke="#8f4526" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <rect x="130" y="165" width="24" height="18" rx="2" fill="#c69a3e" opacity=".9"/>
+          <path d="M100 55 L100 30 M85 45 L70 25 M115 45 L130 25" stroke="#c69a3e" stroke-width="4" stroke-linecap="round"/>
+          <rect x="20" y="205" width="160" height="14" rx="2" fill="#4a3d29" opacity=".3"/>
+        </svg>
+        <figcaption>ภาพประกอบ — ท่าประทับนั่งห้อยพระบาทบนพระแท่นมนังคศิลาอาสน์<br>พระหัตถ์ขวาถือคัมภีร์ พระหัตถ์ซ้ายในท่าสั่งสอน</figcaption>
+      </figure>
+
+      <div class="prose">
+        <h3 style="margin-top:0;">อ่านสัญลักษณ์ในพระบรมรูป</h3>
+        <ul class="detail-list">
+          <li><b>ท่าประทับ</b><span>นั่งห้อยพระบาทบนแท่นมนังคศิลาอาสน์ — ไม่ใช่ท่ารบทัพจับศึกแบบกษัตริย์นักรบ</span></li>
+          <li><b>พระหัตถ์</b><span>ขวาถือคัมภีร์ ซ้ายอยู่ในท่าทรงสั่งสอนประชาชน — ภาพลักษณ์ "พ่อขุน" ธรรมราชาปกครองแบบพ่อปกครองลูก</span></li>
+          <li><b>พระพักตร์</b><span>ถอดแบบจากพระพุทธรูปสมัยสุโขทัยตอนต้น</span></li>
+          <li><b>ฉลองพระองค์</b><span>ถอดแบบจากเทวรูปสมัยสุโขทัย ไม่ใช่เครื่องทรงนักรบ</span></li>
+          <li><b>เทียบกับ</b><span>ต่างจากพระบรมรูปสมเด็จพระนเรศวรที่อยู่ในท่า "ประกาศอิสรภาพ" หรือทรงช้าง/ม้าออกศึก</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="paper card prose" style="margin-top:1.4rem;">
+      <h3 style="margin-top:0;">ข้อสังเกต: "ไทยรบไทย"</h3>
+      <p>
+        คำจารึกที่ฐานอนุสาวรีย์กล่าวถึงวีรกรรมแรกสุดของพ่อขุนรามคำแหงว่า "ทรงกระทำยุทธหัตถีมีชัยชนะขุนสามชนเจ้าเมืองฉอด
+        เมื่อพระชนมายุ 19 พรรษา" — แต่เมืองฉอด (ปัจจุบันคือแม่สอด จ.ตาก) เป็นเมืองที่อยู่ในอำนาจรัฐสุโขทัยอยู่แล้ว
+        การยกย่องศึกครั้งนี้ในฐานะวีรกรรมเปิดเรื่อง จึงเท่ากับเป็นการฉลอง "ไทยรบไทย" ซึ่งผู้วิจัยเห็นว่าไม่สมเหตุสมผล
+        เมื่อเทียบกับตรรกะการยกย่องวีรบุรุษที่ต่อสู้กับศัตรูต่างชาติแบบสมเด็จพระนเรศวร
+      </p>
+      <p style="margin-bottom:0;">
+        ส่วนเนื้อความที่เหลือของคำจารึก — การประดิษฐ์อักษรไทย (พ.ศ. 1826) การสั่งจารึกเหตุการณ์ (พ.ศ. 1835) การผูก
+        สัมพันธไมตรีกับเพื่อนบ้าน การตรากฎหมาย และการทำนุบำรุงศาสนาจนบ้านเมืองร่มเย็น — แทบทั้งหมดคัดลอกความคิดมา
+        จากศิลาจารึกหลักที่ 1 โดยตรง สะท้อนความจงใจสร้างภาพ "ธรรมราชา" ให้ตรงข้ามกับภาพความวุ่นวายรบพุ่งของกรุงศรีอยุธยา
+        ที่ถูกเน้นย้ำในประวัติศาสตร์นิพนธ์สายหลวงวิจิตรวาทการ — ทั้งที่ในความเป็นจริงสุโขทัยก็มีเหตุการณ์ทำนองเดียวกัน
+        เพียงแต่ไม่ถูกเน้น
+      </p>
+    </div>
+
+    <div class="paper card" style="margin-top:1.4rem;">
+      <div class="timeline">
+        <div class="t-item">
+          <div class="t-year">พ.ศ. 2496</div>
+          <h4>จุดเริ่มความตั้งใจ</h4>
+          <p>พิมพ์และจำหน่ายหนังสือประวัติศาสตร์สุโขทัยเพื่อระดมทุนสร้างอนุสาวรีย์</p>
+        </div>
+        <div class="t-item">
+          <div class="t-year">พ.ศ. 2507–2508</div>
+          <h4>ตั้งคณะกรรมการและเลือกที่ตั้ง</h4>
+          <p>กำหนดพื้นที่ 26 ไร่ริมถนนจรดวิถีถ่อง ในกำแพงเมืองเก่า สันนิษฐานว่าเป็นที่ตั้งกรุงสุโขทัยเดิม</p>
+        </div>
+        <div class="t-item">
+          <div class="t-year">พ.ศ. 2509</div>
+          <h4>โยกย้ายชาวบ้านออกจากพื้นที่</h4>
+          <p>ก่อนแผนแม่บทอุทยานประวัติศาสตร์จะเกิดขึ้นเสียอีก</p>
+        </div>
+        <div class="t-item">
+          <div class="t-year">พ.ศ. 2512</div>
+          <h4>วางศิลาฤกษ์</h4>
+          <p>ตามด้วยการหล่อพระบรมรูปและประดิษฐาน</p>
+        </div>
+        <div class="t-item">
+          <div class="t-year">พ.ศ. 2518–2520</div>
+          <h4>พิธีบวงสรวง</h4>
+        </div>
+        <div class="t-item">
+          <div class="t-year">17 พ.ย. พ.ศ. 2526</div>
+          <h4>พระราชพิธีเปิดอย่างเป็นทางการ</h4>
+          <p>ตรงกับปีครบรอบ 700 ปี ลายสือไทย สมเด็จพระบรมโอรสาธิราชฯ เสด็จแทนพระองค์ — ก่อนหน้านั้นหนึ่งวัน
+          มีพระราชพิธีทรงบำเพ็ญพระราชกุศลที่สนามหลวง กรุงเทพฯ เป็นการยืนยันความศักดิ์สิทธิ์ของศิลาจารึกหลักที่ 1
+          ในทางสัญลักษณ์ก่อนจะเปิดอนุสาวรีย์จริงที่สุโขทัย</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="theory-box" style="margin-top:1.4rem;">
+      <span class="eyebrow">เกร็ดประวัติศาสตร์การเมือง</span>
+      <p style="margin-top:.6rem;">
+        เหตุใดพิธีเปิดจึงล่าช้าจากวางศิลาฤกษ์ (2512) ถึง 14 ปี? ผู้วิจัยอธิบายว่าช่วงนั้นเป็นยุคสงครามเย็น ภาคเหนือ
+        ตอนล่างถูกจัดเป็น "พื้นที่สีแดง" จากการเคลื่อนไหวของพรรคคอมมิวนิสต์แห่งประเทศไทย ทำให้การเสด็จพระราชดำเนิน
+        เสี่ยงต่อความปลอดภัย ประกอบกับความไม่มีเสถียรภาพทางการเมืองหลังยุคจอมพลถนอม กว่าจะจัดพิธีได้จริงจังก็ในสมัย
+        รัฐบาลพลเอกเปรม ติณสูลานนท์ เมื่อสถานการณ์คอมมิวนิสต์คลี่คลายลงพอดีกับปีฉลอง 700 ปีลายสือไทย
+      </p>
+    </div>
+  </section>
+
+  <!-- 7.4 -->
+  <section id="s74" class="divider-top">
+    <div class="section-head">
+      <span class="num">7.4</span>
+      <h2>เทศกาลและประเพณีประดิษฐ์</h2>
+      <span class="stamp">"ฟื้นฟู" ครั้งแรก<b>พ.ศ. 2520</b></span>
+    </div>
+    <p class="section-intro">
+      ลอยกระทง เผาเทียน เล่นไฟ — ประเพณีที่คนไทยเชื่อว่าสืบทอดมาแต่ครั้งสุโขทัย แต่แท้จริงแล้วมีอายุไม่ถึง 50 ปี
+    </p>
+
+    <div class="fact-check">
+      <div class="fc-item">
+        <div class="fc-label">อ้างว่าเก่าแก่</div>
+        <div class="fc-value">700+ ปี</div>
+        <div class="fc-sub">โฆษณาว่าสืบมาแต่สมัย "พระร่วงเจ้า" โดยนางนพมาศเป็นผู้ประดิษฐ์กระทง</div>
+      </div>
+      <div class="fc-item">
+        <div class="fc-label">ความจริงตามหลักฐาน</div>
+        <div class="fc-value">≈ 45 ปี</div>
+        <div class="fc-sub">ริเริ่มจัดเป็นงานใหญ่ครั้งแรกเมื่อ พ.ศ. 2520 เท่านั้น</div>
+      </div>
+      <div class="fc-item">
+        <div class="fc-label">ต้นเรื่อง "นางนพมาศ"</div>
+        <div class="fc-value">ร.3</div>
+        <div class="fc-sub">ตำรับท้าวศรีจุฬาลักษณ์แต่งขึ้นสมัยรัชกาลที่ 3 กรุงรัตนโกสินทร์ ไม่ใช่สมัยสุโขทัย</div>
+      </div>
+    </div>
+
+    <div class="paper card prose" style="margin-top:1.6rem;">
+      <h3 style="margin-top:0;">จากศิลาจารึกสู่เทศกาลระดับชาติ</h3>
+      <p>
+        แนวคิดริเริ่มมาจากนายนิคม มูสิกะคามะ หัวหน้าอุทยานประวัติศาสตร์สุโขทัยในขณะนั้น (ต่อมาเป็นอธิบดีกรมศิลปากร
+        ปี 2541–2542) ผู้เสนอให้ "พลิกฟื้น" ประเพณีนี้ขึ้นเป็นงานใหญ่ระดับชาติ โดยตีความจากข้อความในศิลาจารึกหลักที่ 1
+        ที่กล่าวถึงงานกฐินและวลี "ท่านเผาเทียน ท่านเล่นไฟ" มาผูกโยงเข้ากับพิธีลอยกระทงบูชารอยพระพุทธบาท
+        จุดประสงค์หลักคือทำให้สุโขทัยเป็นที่รู้จักและดึงดูดนักท่องเที่ยว
+      </p>
+      <p>
+        ปี 2520 สมเด็จพระเจ้าลูกเธอ เจ้าฟ้าสิรินธรเทพรัตนสุดาฯ (พระอิสริยยศขณะนั้น) เสด็จทรงลอยพระประทีปเป็นปฐมฤกษ์
+        ปีเดียวกับที่พระองค์ได้รับการสถาปนาเป็นสมเด็จพระเทพรัตนราชสุดาฯ — นับแต่นั้นจึงกลายเป็นธรรมเนียมที่พระราชวงศ์
+        พระราชทานพระประทีปลอยเป็นปฐมฤกษ์ทุกปี ตอกย้ำความศักดิ์สิทธิ์ของประเพณีที่เพิ่งสร้างขึ้นใหม่
+      </p>
+      <p style="margin-bottom:0;">
+        ทว่าในปีแรกๆ ก็มีเสียงวิจารณ์ เช่น พ.ศ. 2523 อธิบดีกรมศิลปากรยอมรับว่าผลประโยชน์จากงานตกเป็นของจังหวัดไม่ใช่
+        อุทยานฯ ทั้งยังขาดทุน และมีเสียงบ่นว่าบรรยากาศเหมือน "งานวัด" เพราะใช้วงดนตรีลูกทุ่งแทนดนตรีไทยคลาสสิก
+      </p>
+    </div>
+
+    <div class="theory-box">
+      <span class="eyebrow">กรอบทฤษฎี · Eric Hobsbawm — Invented Tradition</span>
+      <p style="margin-top:.6rem;">
+        ฮอบสบอมอธิบายว่า "ประเพณีประดิษฐ์" คือปรากฏการณ์ทางสังคมที่หยิบ "ของโบราณ" เช่น เรื่องเล่า พิธีกรรม
+        ข้อปฏิบัติเก่า มาสร้างใหม่ ตีความ ต่อเติม ปรุงแต่ง แล้วทำให้เป็นระเบียบแบบแผนและพิธีกรรม (Formalize &amp;
+        Ritualization) โดยมักอ้างอิงความต่อเนื่องยาวนานจากอดีต เพื่อรับใช้เศรษฐกิจ การเมือง และสังคมปัจจุบันที่กำลัง
+        เผชิญความเปลี่ยนแปลงและการโหยหาอดีต — บางครั้งประเพณีเหล่านี้ก็ไม่ได้เกิดจากสังคมทั้งหมด แต่ริเริ่มโดย
+        คนกลุ่มเล็กๆ เพียงไม่กี่คน ซึ่งสามารถสืบค้นต้นตอได้ไม่ยาก เหมือนกรณีลอยกระทง เผาเทียน เล่นไฟ ของสุโขทัยนี้เอง
+      </p>
+    </div>
+
+    <p class="section-intro" style="margin-top:1.6rem;">
+      แม้นักวิชาการอย่างสุจิตต์ วงษ์เทศและคณะจะออกหนังสือ <i>"ไม่มีนางนพมาศ ไม่มีลอยกระทงสมัยสุโขทัย"</i> ท้วงติง
+      อย่างชัดเจน แต่ข้อโต้แย้งนี้ก็ไม่ได้รับการตอบสนองในวงกว้าง เพราะเทศกาลนี้ได้กลายเป็นเครื่องยนต์เศรษฐกิจไปแล้ว
+      — เดือนพฤศจิกายนของทุกปีคือช่วงที่เงินสะพัดในธุรกิจท่องเที่ยวสุโขทัยมากที่สุดในรอบปี
+    </p>
+  </section>
+
+  <!-- ACTORS -->
+  <section class="divider-top">
+    <div class="section-head">
+      <span class="num">ผู้เล่นหลัก</span>
+      <h2>ใครคือผู้ "ประดิษฐ์" สุโขทัย</h2>
+    </div>
+    <div class="actor-grid">
+      <div class="actor">
+        <div class="role">หน่วยงานรัฐ</div>
+        <h4>กรมศิลปากร</h4>
+        <p>ผู้ขุดค้น บูรณะ จัดตั้งพิพิธภัณฑ์ และเขียนเรื่องเล่าทางการของสุโขทัยมาตลอด ตั้งแต่ พ.ศ. 2454</p>
+      </div>
+      <div class="actor">
+        <div class="role">รัฐบาล</div>
+        <h4>จอมพล ป. พิบูลสงคราม</h4>
+        <p>ผู้ริเริ่มยกสถานะสุโขทัยเป็น "จังหวัดวัฒนธรรมและประวัติศาสตร์ของชาติ" ปี 2496</p>
+      </div>
+      <div class="actor">
+        <div class="role">ราชสำนัก</div>
+        <h4>สถาบันพระมหากษัตริย์</h4>
+        <p>เชื่อมโยงตนเองกับราชวงศ์พระร่วงผ่านพิธีกรรมต่างๆ เพื่ออ้างอิงความชอบธรรมและความต่อเนื่องยาวนาน</p>
+      </div>
+      <div class="actor">
+        <div class="role">ผู้บริหารท้องถิ่น</div>
+        <h4>นิคม มูสิกะคามะ</h4>
+        <p>ผู้ริเริ่ม "ฟื้นฟู" ประเพณีลอยกระทง เผาเทียน เล่นไฟ ให้เป็นงานระดับชาติตั้งแต่ พ.ศ. 2520</p>
+      </div>
+      <div class="actor">
+        <div class="role">ฝ่ายวิพากษ์</div>
+        <h4>ธิดา สาระยา / สุจิตต์ วงษ์เทศ</h4>
+        <p>นักประวัติศาสตร์ท้องถิ่นที่ตั้งคำถามต่อความชอบธรรมของการ "ประดิษฐ์" สถานที่และประเพณีเหล่านี้</p>
+      </div>
+      <div class="actor">
+        <div class="role">องค์กรระหว่างประเทศ</div>
+        <h4>UNESCO</h4>
+        <p>ให้ความช่วยเหลือด้านวิชาการและขึ้นทะเบียนมรดกโลกปี 2534 ผนึกภาพลักษณ์สุโขทัยในเวทีสากล</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONCLUSION -->
+  <section id="conclusion" class="divider-top">
+    <div class="section-head">
+      <span class="num">บทสรุป</span>
+      <h2>อดีตที่ถูกสร้างเพื่อปัจจุบัน</h2>
+    </div>
+    <div class="paper card prose">
+      <p>
+        อุทยานประวัติศาสตร์ พิพิธภัณฑ์ อนุสาวรีย์ และประเพณีประดิษฐ์ ล้วนมีฐานจากประวัติศาสตร์กระแสหลักของไทย
+        และสร้างขึ้นโดยรัฐกับหน่วยงานราชการที่มีอำนาจคัดเลือกเรื่องราวเพื่อดำรงความยิ่งใหญ่ของสุโขทัยไว้ ราชสำนักเอง
+        ก็มีบทบาทสำคัญในการเชื่อมโยงตนเองเข้ากับราชวงศ์พระร่วง ผู้ได้ชื่อว่าเป็น "ต้นกำเนิด" ของสถาบันพระมหากษัตริย์ไทย
+        — ไม่ต่างจากที่ประวัติศาสตร์ชาติต้องการภูมิหลังที่เป็นเอกภาพ ต่อเนื่อง และยาวนาน
+      </p>
+      <p style="margin-bottom:0;">
+        ท้ายที่สุด สิ่งประดิษฐ์เหล่านี้ยังผูกพันกับภาพลักษณ์อันงดงามของประเทศไทย การท่องเที่ยว และรายได้เข้าประเทศ
+        เรื่องเล่าและสิ่งก่อสร้างที่ถูกประดิษฐ์ขึ้นจึงจำเป็นต้องดำรงอยู่ต่อไป เพื่อรองรับผลประโยชน์ทั้งในทาง
+        ประวัติศาสตร์กระแสหลักและในทางเศรษฐกิจ — ความเป็นสุโขทัยที่ถูกสร้างขึ้นจึงเกี่ยวพันกับ
+        <b>ความเป็นชาติ ความเป็นไทย และกระแสเงินตรา</b> ไปพร้อมกันอย่างแยกไม่ออก
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span class="eyebrow">สรุปเนื้อหา</span>
+  บทที่ 7 "สุโขทัยที่จับต้องได้: การประดิษฐ์สร้าง 'สุโขทัย' ภายนอกตำราประวัติศาสตร์ พ.ศ. 2496–2534"
+  <div class="src">
+    สรุปและจัดทำเว็บเพจโดยอ้างอิงจากเนื้อหาต้นฉบับที่ผู้ใช้อัปโหลด ครอบคลุมหัวข้อ 7.1–7.4 ครบถ้วน
+    เพื่อการอ่านทบทวนเท่านั้น มิได้ทดแทนการอ้างอิงต้นฉบับทางวิชาการ
+  </div>
+</footer>
+
+</body>
+</html>
